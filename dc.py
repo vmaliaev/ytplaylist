@@ -14,22 +14,28 @@ from pydub import AudioSegment
 # >>> from pydub import AudioSegment
 # >>> AudioSegment.from_file("Life Begins at the End of Your Comfort Zone | Yubing Zhang | TEDxStanford.opus").export("test-11.mp3",format="mp3")
 
+
+def get_title(arg):
+    return pafy.get_playlist(arg)
+  
 def stru(arg):
-    print "Hi"
-    print arg
+#    print arg
     for i in arg:
         print i
+        playlist = get_title(i)
+        title = playlist["title"]
+        print "Title=",title
         try:
-            os.makedirs("Playlist="+i)
+            os.makedirs("Playlist="+title)
         except OSError as exception:
             if exception.errno != errno.EEXIST:
                 raise
         try:
-            os.makedirs("Playlist="+i+"/audio")
+            os.makedirs("Playlist="+title+"/audio")
         except OSError as exception:
             if exception.errno != errno.EEXIST:
                 raise
-
+#        for k in playlist['items']: k['pafy'].getbestaudio().download()
 
 if __name__ == "__main__":
 
