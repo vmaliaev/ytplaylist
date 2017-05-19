@@ -26,7 +26,10 @@ def stru(arg):
         title = playlist["title"]
         newpath_video = "Playlist="+title
         newpath_audio = newpath_video+"/audio"
+        no_list = len(playlist['items'])
         print "Playlist:",title
+        print "Items:",no_list
+
         try:
             os.makedirs(newpath_video)
         except OSError as exception:
@@ -37,18 +40,22 @@ def stru(arg):
         except OSError as exception:
             if exception.errno != errno.EEXIST:
                 raise
-        for k in playlist['items']:
-            print k['pafy'].title
+        for no,k in enumerate(playlist['items']):
+            print 1+no," of ",no_list,":",k['pafy'].title
             if os.path.isfile(newpath_audio+"/"+k['pafy'].title+"."+k['pafy'].getbestaudio().extension): print "File already exists" ;continue
             k['pafy'].getbest().download(filepath=newpath_video)
             k['pafy'].getbestaudio().download(filepath=newpath_audio)
-            break
-            
+ #           break
+        
+        print "Converting audio..."    
         for (dirp, dirn, f) in os.walk(newpath_audio):
             break
         for fname in f:
             fext = fname.split(".")[-1]
-            if fext == "mp3" and fext == "temp" : continue #print fname+"!."+fext
+            if fname[0] == '.': continue
+            if fname[:-len(fext)]+"mp3" in f: continue
+            if fext == "mp3" or fext == "temp" : continue #print fname+"!."+fext
+            print fname
             AudioSegment.from_file(newpath_audio+"/"+fname).export(newpath_audio+"/"+fname[:-len(fext)]+"mp3" , format="mp3")
 
 if __name__ == "__main__":
@@ -59,5 +66,5 @@ if __name__ == "__main__":
     #Download all the videos to Playlist Folder
     #Download all the audios to Playlist Folder audio
     #Convert all audio to mp3 
-
+    print "Work completed."
 
