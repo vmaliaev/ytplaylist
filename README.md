@@ -1,1 +1,8 @@
-Download playlists from YT and convert audio tracks to mp3 
+# Download playlists from youtube and convert audio tracks to mp3
+
+
+
+## USAGE:
+
+
+
