@@ -1,6 +1,8 @@
 #!/Users/vmaliaev/venv1/bin/python
 
 ##!/usr/bin/python
+
+# USAGE: ./dyp.py playlist_url1 playlist_url2 playlist_urlN [ --audioonly | --videoonly | --all ]
 import os
 import sys
 import errno
@@ -8,6 +10,7 @@ import errno
 import pafy
 from pydub import AudioSegment
 
+_condit = '--all'
 
 def get_title(arg):
     return pafy.get_playlist(arg)
@@ -15,7 +18,7 @@ def get_title(arg):
 def stru(arg):
 #    print arg
     for i in arg:
-        print i
+        print "\n",i
         try:
             playlist = get_title(i)
         except ValueError as e:
@@ -42,12 +45,14 @@ def stru(arg):
                 raise
         for no,k in enumerate(playlist['items']):
             print 1+no," of ",no_list,":",k['pafy'].title
-            if os.path.isfile(newpath_audio+"/"+k['pafy'].title+"."+k['pafy'].getbestaudio().extension): print "File already exists" ;continue
-            k['pafy'].getbest().download(filepath=newpath_video)
-            k['pafy'].getbestaudio().download(filepath=newpath_audio)
+            if os.path.isfile(newpath_video+"/"+k['pafy'].title+"."+k['pafy'].getbest().extension): print "File video already exists" ;continue
+            if _condit in ['--all', '--videoonly']: k['pafy'].getbest().download(filepath=newpath_video) # Video
+            if os.path.isfile(newpath_audio+"/"+k['pafy'].title+"."+k['pafy'].getbestaudio().extension): print "File audio already exists" ;continue
+            if _condit in ['--all', '--audioonly']: k['pafy'].getbestaudio().download(filepath=newpath_audio) #Audio
  #           break
-        
-        print "Converting audio..."    
+
+        if _condit in ['--all', '--videoonly']: continue
+        print "\nConverting audio..."    
         for (dirp, dirn, f) in os.walk(newpath_audio):
             break
         for fname in f:
@@ -58,10 +63,13 @@ def stru(arg):
             print fname
             AudioSegment.from_file(newpath_audio+"/"+fname).export(newpath_audio+"/"+fname[:-len(fext)]+"mp3" , format="mp3")
 
+
 if __name__ == "__main__":
 
     #Create Folder=Playlist
     #Create Folder=Playlistaudio
+    if sys.argv[-1] in ["--audioonly","--videoonly","--all"] : _condit = sys.argv.pop() 
+    if sys.argv[-1][0:2] == '--' : print "ERROR: Check argument" ; exit()
     stru(sys.argv[1:])
     #Download all the videos to Playlist Folder
     #Download all the audios to Playlist Folder audio
