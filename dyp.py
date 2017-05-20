@@ -51,7 +51,7 @@ def stru(arg):
             if _condit in ['--all', '--audioonly']: k['pafy'].getbestaudio().download(filepath=newpath_audio) #Audio
  #           break
 
-        if _condit in ['--all', '--videoonly']: continue
+        if _condit in ['--videoonly']: continue
         print "\nConverting audio..."    
         for (dirp, dirn, f) in os.walk(newpath_audio):
             break
