@@ -1,6 +1,11 @@
 #!/Users/vmaliaev/venv1/bin/python
 
 ##!/usr/bin/python
+# https://github.com/mps-youtube/pafy
+# http://pydub.com
+# http://stackoverflow.com/questions/38110384/convert-any-audio-file-to-mp3-with-python 
+
+
 
 # USAGE: ./dyp.py playlist_url1 playlist_url2 playlist_urlN [ --audioonly | --videoonly | --all ]
 import os
