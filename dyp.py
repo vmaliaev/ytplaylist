@@ -16,6 +16,7 @@ import pafy
 from pydub import AudioSegment
 
 _condit = '--all'
+error_list = []
 
 def get_title(arg):
     return pafy.get_playlist(arg)
@@ -50,10 +51,13 @@ def stru(arg):
                 raise
         for no,k in enumerate(playlist['items']):
             print 1+no," of ",no_list,":",k['pafy'].title
-            if os.path.isfile(newpath_video+"/"+k['pafy'].title+"."+k['pafy'].getbest().extension): print "File video already exists" ;continue
-            if _condit in ['--all', '--videoonly']: k['pafy'].getbest().download(filepath=newpath_video) # Video
-            if os.path.isfile(newpath_audio+"/"+k['pafy'].title+"."+k['pafy'].getbestaudio().extension): print "File audio already exists" ;continue
-            if _condit in ['--all', '--audioonly']: k['pafy'].getbestaudio().download(filepath=newpath_audio) #Audio
+            try:
+                if os.path.isfile(newpath_video+"/"+k['pafy'].title+"."+k['pafy'].getbest().extension): print "File video already exists" ;continue
+                if _condit in ['--all', '--videoonly']: k['pafy'].getbest().download(filepath=newpath_video) # Video
+                if os.path.isfile(newpath_audio+"/"+k['pafy'].title+"."+k['pafy'].getbestaudio().extension): print "File audio already exists" ;continue
+                if _condit in ['--all', '--audioonly']: k['pafy'].getbestaudio().download(filepath=newpath_audio) #Audio
+            except IOError as er:
+                error_list.append((er, k['pafy'].title))
  #           break
 
         if _condit in ['--videoonly']: continue
@@ -79,5 +83,6 @@ if __name__ == "__main__":
     #Download all the videos to Playlist Folder
     #Download all the audios to Playlist Folder audio
     #Convert all audio to mp3 
+    for i in error_list: print i[0],"Track:", i[1]
     print "Work completed."
 

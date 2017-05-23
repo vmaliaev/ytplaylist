@@ -37,3 +37,6 @@
  ? pip install avconv
  ? apt-get install ffmpeg
 ```
+
+Add `x` permission: 
+`chmod a+x dyp.py`
