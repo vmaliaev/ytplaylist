@@ -8,7 +8,6 @@
 import sys
 from pydub import AudioSegment
 
-#track=''
 
 def slice(arg):
     print "Slicing"
@@ -16,16 +15,18 @@ def slice(arg):
     
     first_sec = arg[1] + "000"
     last_sec  = 0
-    if arg[2]: last_sec = arg[2] + "000"
+#    print arg[2]
+    if len(arg)>2: last_sec = arg[2] + "000"
     
     print first_sec
     print int(last_sec)
 
-    modified = track[int(first_sec):int(last_sec)]
-#    modified = track[5000:15000]
+    if int(last_sec) == 0:
+        modified = track[int(first_sec):]
+    else:
+        modified = track[int(first_sec):-int(last_sec)]
 
     modified.export("testcut.mp3", format="mp3")
-#    if 
 
 
 
