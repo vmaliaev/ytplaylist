@@ -2,8 +2,8 @@
 
 #!#/usr/bin/env python
 
-#USAGE: ./ht_cut.py [ cut seconds from begin [ cut seconds from end ]]
-#       ./ht_cut.py 12 3 
+#USAGE: ./ht_cut.py audiotrack.mp3  cut_seconds_from_begin [ cut_seconds_from_end ]
+#       ./ht_cut.py audiotrack.mp3  12 3 
 
 import sys
 from pydub import AudioSegment
@@ -26,8 +26,9 @@ def slice(arg):
     else:
         modified = track[int(first_sec):-int(last_sec)]
 
-    modified.export("testcut.mp3", format="mp3")
-
+    fname = arg[0]+".cut.mp3"
+    print fname
+    modified.export(arg[0]+".cut.mp3", format="mp3")
 
 
 
